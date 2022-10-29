@@ -1,0 +1,38 @@
+- Sprint Goal
+  - Main functionality of the restaurant app 
+- Team Capacity
+  - Team:
+    - 10 Team members.
+  - Sprints:
+    - 4 weeks - 2 weeks - 2 weeks.
+    - Total 2 months
+  - Working hours
+    - 40 Hours per week.
+    - Total 320 Hours in 3 Sprints.
+- Backlog Items
+  - Create Account.
+  - Reset Password.
+  - View Restaurants.
+  - Search Restaurants.
+  - View Menu
+  - Purchase
+  - View Order
+- Team assignment
+  - Member 1 & 2:
+    - Create Account & Reset Password.
+    - 40 Hours
+  - Member 3 & 4:
+    - View Restaurants & Search restaurants.
+    - 40 Hours
+  - Member 5 & 6:
+    - View Menu.
+    - 40 Hours
+  - Member 7 & 8:
+    - Purchase.
+    - 80 Hours
+  - Member 9 & 10:
+    - View Order.
+    - 40 Hours
+  - member 1 & 2 & 3 & 4:
+    - Test App.
+    - 80 hours
