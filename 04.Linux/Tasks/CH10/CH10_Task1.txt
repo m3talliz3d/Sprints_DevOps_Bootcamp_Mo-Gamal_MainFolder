@@ -1,0 +1,58 @@
+[mgamal@centos-sprints .ssh]$ ping centos-minimal -c1
+PING centos-minimal (10.10.10.101) 56(84) bytes of data.
+64 bytes from centos-minimal (10.10.10.101): icmp_seq=1 ttl=64 time=0.579 ms
+
+--- centos-minimal ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.579/0.579/0.579/0.000 ms
+[mgamal@centos-sprints .ssh]$ ssh-keygen -f centos_minimal
+Generating public/private rsa key pair.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in centos_minimal.
+Your public key has been saved in centos_minimal.pub.
+The key fingerprint is:
+SHA256:SaIpPrmRyaytERDTLeuZkDU1H/60L8mb7NL192vRW/Q mgamal@centos-sprints.metallized.lab
+The key's randomart image is:
++---[RSA 3072]----+
+|o. oo .          |
+| o= .+ .         |
+|.o +  + o        |
+|+ .  o = o      .|
+|.o.oo   S      .o|
+| =+=   . o.    .E|
+|. X    .+...    +|
+| + +  ...+  . .o |
+|o.o    o=    ..oo|
++----[SHA256]-----+
+[mgamal@centos-sprints .ssh]$ ssh-copy-id -i centos_minimal.pub mgamal_m@centos-minimal
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "centos_minimal.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+mgamal_m@centos-minimal's password:
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'mgamal_m@centos-minimal'"
+and check to make sure that only the key(s) you wanted were added.
+
+[mgamal@centos-sprints .ssh]$ ssh -i centos_minimal magaml_m@centos-minimal
+magaml_m@centos-minimal's password:
+
+[mgamal@centos-sprints .ssh]$ ssh -i centos_minimal magaml_m@10.10.10.101
+magaml_m@10.10.10.101's password:
+
+[mgamal@centos-sprints .ssh]$ ls
+authorized_keys  centos_minimal  centos_minimal.pub  known_hosts
+[mgamal@centos-sprints .ssh]$ ssh -i ~/.ssh/centos_minimal magaml_m@10.10.10.101
+magaml_m@10.10.10.101's password:
+
+[mgamal@centos-sprints .ssh]$ ssh -i ~/.ssh/centos_minimal magaml_m^C0.10.10.101
+[mgamal@centos-sprints .ssh]$ ssh -i centos_minimal mgamal_m@centos-minimal
+Last login: Sun Nov 13 16:12:29 2022 from 10.10.10.100
+[mgamal_m@d ~]$ ip a| grep inet
+    inet 127.0.0.1/8 scope host lo
+    inet6 ::1/128 scope host
+    inet 10.10.10.101/24 brd 10.10.10.255 scope global noprefixroute ens192
+    inet6 fe80::250:56ff:feba:9a77/64 scope link noprefixroute
+[mgamal_m@d ~]$
