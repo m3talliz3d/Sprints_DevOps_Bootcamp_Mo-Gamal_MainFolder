@@ -28,7 +28,7 @@ change_ssh_t3 () {
     echo "your new port is $new_ssh_port"
 }
 
-add_user_t2 () {
+add_user_t3 () {
     read -p "Type the username that you need to add to the system: " user_add_t2
     useradd $user_add_t2
     # Add option to add user to wheel users
@@ -37,7 +37,7 @@ add_user_t2 () {
     echo "$user_add_t2  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$user_add_t2
 }
 
-backup_t2 () {
+backup_t3 () {
 	# Create directory task1 under directory backups
 	mkdir -p $HOME/backups/task2
 	# Archiving directory "Reports_t1"
