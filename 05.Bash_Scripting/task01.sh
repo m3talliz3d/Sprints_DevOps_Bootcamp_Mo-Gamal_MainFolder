@@ -18,12 +18,12 @@ else
 fi
 }
 
-create_months () {
+create_months_t1 () {
 # Create 12 months folders inside Reports
 mkdir $HOME/Reports_t1/2022/{01..12}
 }
 
-create_days () {
+create_days_t1 () {
 # Create Files with teh correct number of days inside each Month_folder
 # months 2
 touch $HOME/Reports_t1/2022/02/{01..28}.xls
@@ -73,9 +73,9 @@ cleanup_t1 () {
 # Calling create_dir_t1 function in Line 3-13
 create_dir_t1
 # Calling create_dir_t1 function in Line 3-13
-create_months
+create_months_t1
 #Calling create_dir_t1 function in Line 3-13
-create_days
+create_days_t1
 #Calling create_dir_t1 function in Line 3-13
 backup_t1
 # Removing created task directories 

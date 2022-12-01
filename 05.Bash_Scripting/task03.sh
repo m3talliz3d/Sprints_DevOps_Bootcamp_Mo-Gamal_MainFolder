@@ -3,7 +3,8 @@
 # ssh_config = Check that ports are within the range
 
 #echo $(sudo sed -E 's/[#]?Port 22/Port 232/' /etc/ssh/sshd_config | grep   ^Port)
-Check_root_t2 () {
+# SAME AS T2
+Check_root_t3 () {
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
   exit
@@ -11,7 +12,8 @@ if [ "$EUID" -ne 0 ]
 fi
 }
 
-change_ssh_t2 () {
+
+change_ssh_t3 () {
     # sshd_config location
     #ssh_config_path="/etc/ssh/sshd_config"
     ssh_config_path="/home/mgamal/scripts/sshd_config"
