@@ -43,7 +43,7 @@ backup_t3 () {
 	# Archiving directory "Reports_t1"
 	crontab -l | { cat; echo "* * * * * tar -czf /root/backups/task2/home_dir_backup_$(date +'%F_%H-%M-%S').tar /root/"; } | crontab -
 }
-#check_root
-#change_ssh
-#add_user_t2
-#backup_t2
+check_root_t3
+change_ssh_t3
+add_user_t3
+backup_t3
