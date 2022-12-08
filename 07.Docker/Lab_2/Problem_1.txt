@@ -1,0 +1,54 @@
+####################
+Problem 1
+####################
+-- Add network --
+[root@centos-sprints simple-flask-app]# docker network create --subnet=192.168.0.0/24 --gateway=192.168.0.254  net_192_168_0_0
+b904efe4de638363a593dfc1f72dac873de7b891e9428f3966de9e1a05d270fc
+
+
+[root@centos-sprints simple-flask-app]# docker network create --subnet=10.5.0.0/24 --gateway=10.5.0.254  net_10_5_0_0
+a1a1d16657323e3f0a351c9ab8c56d4d68c3c72d763343cb6745a07404a81c0e
+
+-- Show created Network --
+[root@centos-sprints simple-flask-app]# doc network ls
+NETWORK ID     NAME              DRIVER    SCOPE
+426e94166ed4   bridge            bridge    local
+6cb66cbcb1f0   host              host      local
+a1a1d1665732   net_10_5_0_0      bridge    local
+b904efe4de63   net_192_168_0_0   bridge    local
+
+-- IP of each VM --
+Alpine#1:
+eth0      Link encap:Ethernet  HWaddr 02:42:0A:05:00:02  
+          inet addr:10.5.0.2  Bcast:10.5.0.255  Mask:255.255.255.0
+Alpine#2 
+eth0      Link encap:Ethernet  HWaddr 02:42:C0:A8:00:01  
+          inet addr:192.168.0.1  Bcast:192.168.0.255  Mask:255.255.255.0
+          
+Alpine#3
+eth0      Link encap:Ethernet  HWaddr 02:42:0A:05:00:01  
+          inet addr:10.5.0.1  Bcast:10.5.0.255  Mask:255.255.255.0
+          
+          
+-- Ping same network --     
+          # ping 10.5.0.1
+PING 10.5.0.1 (10.5.0.1): 56 data bytes
+64 bytes from 10.5.0.1: seq=0 ttl=64 time=0.450 ms
+64 bytes from 10.5.0.1: seq=1 ttl=64 time=0.217 ms
+64 bytes from 10.5.0.1: seq=2 ttl=64 time=0.194 ms
+
+--- 10.5.0.1 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.194/0.287/0.450 ms
+
+-- show machines on same network --
+/ # arp
+Address                  HWtype  HWaddress           Flags Mask            Iface
+3f4c4dbeb3f8.net_10_5_0  ether   02:42:0a:05:00:01   C                     eth0
+10.5.0.254               ether   02:42:c0:76:dc:d7   C                     eth0
+
+-- ping different network --
+/ # ping 192.168.0.1
+PING 192.168.0.1 (192.168.0.1): 56 data bytes
+
+
