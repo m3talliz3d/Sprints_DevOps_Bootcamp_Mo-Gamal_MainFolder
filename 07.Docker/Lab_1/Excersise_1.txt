@@ -370,10 +370,57 @@ Link https://github.com/m3talliz3d/Sprints_DevOps_Bootcamp_Mo-Gamal_MainFolder/t
 ##############################
 18. create volume called mysql_data
 ##############################
+[root@centos-sprints docker]# docker run -e MYSQL_ROOT_PASSWORD='db123' --name t18_mysql_2 -v mysql_data:/opt/data mysql:latest 
+2022-12-10 18:20:23+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.31-1.el8 started.
+2022-12-10 18:20:24+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+2022-12-10 18:20:24+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.31-1.el8 started.
+2022-12-10 18:20:24+00:00 [Note] [Entrypoint]: Initializing database files
+2022-12-10T18:20:24.783072Z 0 [Warning] [MY-011068] [Server] The syntax '--skip-host-cache' is deprecated and will be removed in a future release. Please use SET GLOBAL host_cache_size=0 instead.
+2022-12-10T18:20:24.783344Z 0 [System] [MY-013169] [Server] /usr/sbin/mysqld (mysqld 8.0.31) initializing of server in progress as process 79
+2022-12-10T18:20:24.800368Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+
+-- Docker Volumes --
+[root@centos-sprints docker]# docker volume ls
+DRIVER    VOLUME NAME
+.
+.
+.
+local     mysql_data
+local     problem3_vol_sql_1
+
+-- --
+sh-4.4# cd opt/data/
+sh-4.4# ls
+sh-4.4# pwd
+/opt/data
+sh-4.4# touch test-file-mysql
+sh-4.4# ls
+test-file-mysql
 
 
+-- --
 
 ##############################
 19. store data at /var/lib/mysql on the same mysql container
 ##############################
+[root@centos-sprints docker]# docker run -e MYSQL_ROOT_PASSWORD='db123' --name t18_mysql_4 -v mysql_data_var:/var/lib/mysql mysql:latest
+2022-12-10 18:31:51+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.31-1.el8 started.
+2022-12-10 18:31:52+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+2022-12-10 18:31:52+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.31-1.el8 started.
+2022-12-10 18:31:52+00:00 [Note] [Entrypoint]: Initializing database files
+2022-12-10T18:31:52.715110Z 0 [Warning] [MY-011068] [Server] The syntax '--skip-host-cache' is deprecated and will be removed in a future release. Please use SET GLOBAL host_cache_size=0 instead.
 
+-- --
+sh-4.4# cd /var/lib/mysql
+sh-4.4# ls
+'#ib_16384_0.dblwr'   auto.cnf        ca-key.pem        ib_buffer_pool   mysql.ibd            public_key.pem    undo_001
+'#ib_16384_1.dblwr'   binlog.000001   ca.pem            ibdata1          mysql.sock           server-cert.pem   undo_002
+'#innodb_redo'        binlog.000002   client-cert.pem   ibtmp1           performance_schema   server-key.pem
+'#innodb_temp'        binlog.index    client-key.pem    mysql            private_key.pem      sys
+sh-4.4# touch 00.test
+sh-4.4# ls
+'#ib_16384_0.dblwr'   00.test         binlog.index      client-key.pem   mysql                private_key.pem   sys
+'#ib_16384_1.dblwr'   auto.cnf        ca-key.pem        ib_buffer_pool   mysql.ibd            public_key.pem    undo_001
+'#innodb_redo'        binlog.000001   ca.pem            ibdata1          mysql.sock           server-cert.pem   undo_002
+'#innodb_temp'        binlog.000002   client-cert.pem   ibtmp1           performance_schema   server-key.pem
+sh-4.4# 
