@@ -1,0 +1,25 @@
+version: "3"
+services:
+  img_flask:
+    build: ./flask
+    container_name: cont_flask
+
+    depends_on:
+      - img_nginx
+      - img_mysql
+
+  img_nginx:
+    image: nginx:stable-alpine
+    container_name: cont_nginx
+    
+  img_mysql:
+    image: mysql
+    container_name: cont_mysql
+    command: sleep 50
+    volumes:
+        - type: volume
+          source: vol_sql_1
+          target: /code
+
+volumes:
+  vol_sql_1:
