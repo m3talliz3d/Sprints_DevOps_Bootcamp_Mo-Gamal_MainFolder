@@ -363,8 +363,7 @@ metallized@TUF-INSIDE:~$ docker inspect 478c67efbf7b
 ##############################
 17. Pull code from github and create docker file for the flask app
 ##############################
-Check Folder task_17
-Link https://github.com/m3talliz3d/Sprints_DevOps_Bootcamp_Mo-Gamal_MainFolder/tree/main/07.Docker/Lab_1/task_17/simple-flask-app
+
 
 
 ##############################
