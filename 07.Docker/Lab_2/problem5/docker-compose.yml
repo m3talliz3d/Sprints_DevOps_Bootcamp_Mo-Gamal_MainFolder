@@ -1,0 +1,10 @@
+version: '3'
+services:
+  img_ghost:
+    image: ghost:1-alpine
+    container_name: cont_ghost
+
+  img_mysql:
+    image: mysql
+    container_name: cont_mysql
+    command: sleep 10
