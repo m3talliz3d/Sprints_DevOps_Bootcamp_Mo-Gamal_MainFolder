@@ -1,0 +1,35 @@
+ubuntu@ip-10-0-0-184:~$ ls
+sprints_apache_ec2.pem
+ubuntu@ip-10-0-0-184:~$ ssh -i sprints_apache_ec2.pem ubuntu@10.0.1.48
+The authenticity of host '10.0.1.48 (10.0.1.48)' can't be established.
+ED25519 key fingerprint is SHA256:MgxY2eniXzu2xk+vfxRUVRGdakSlHeFg+kLpshvSLZE.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '10.0.1.48' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 22.04.1 LTS (GNU/Linux 5.15.0-1026-aws x86_64)
+
+.
+.
+.
+.
+
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+ubuntu@ip-10-0-1-48:~$ ipa
+Command 'ipa' not found, but can be installed with:
+sudo apt install freeipa-client
+ubuntu@ip-10-0-1-48:~$ ip a
+.
+.
+.
+.
+
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9001 qdisc fq_codel state UP group default qlen 1000
+    link/ether 06:f2:ae:c7:08:67 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.1.48/24 metric 100 brd 10.0.1.255 scope global dynamic eth0
+       valid_lft 3051sec preferred_lft 3051sec
+    inet6 fe80::4f2:aeff:fec7:867/64 scope link
+       valid_lft forever preferred_lft forever
+ubuntu@ip-10-0-1-48:~$
