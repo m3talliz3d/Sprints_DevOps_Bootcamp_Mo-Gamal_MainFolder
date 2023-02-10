@@ -69,9 +69,11 @@ spec:
 ```bash
 [mgamal@centos-sprints Lab4]$ kubectl apply -f Lab4_Q2.yaml 
 pod/print-env-greeting created
+
 [mgamal@centos-sprints Lab4]$ kubectl get pod
 NAME                 READY   STATUS             RESTARTS     AGE
 print-env-greeting   0/1     CrashLoopBackOff   1 (5s ago)   16s
+
 [mgamal@centos-sprints Lab4]$ kubectl logs -f print-env-greeting
 Welcome to DevOps Industries
 ```
@@ -85,7 +87,29 @@ Welcome to DevOps Industries
     Host Path: /pv/log 
 
 ### <u>__Solution__:</u>
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-log
+  labels:
+    app: pv-log
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 100Mi
+  hostPath:
+    path: "/pv/log"
+  claimRef:
+    name: claim-log-1
 
+```
+
+```shell
+[mgamal@centos-sprints Lab4]$ kubectl apply -f Lab4_Q3.yaml 
+persistentvolume/pv-log created
+```
 ***
 
 ## 4- Create a Persistent Volume Claim with the given specification. 
@@ -94,7 +118,26 @@ Welcome to DevOps Industries
     Access Modes: ReadWriteMany 
 
 ### <u>__Solution__:</u>
-
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: claim-log-1
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "50Mi"
+  selector:
+    matchLabels:
+      app: pv-log
+```
+```shell
+[mgamal@centos-sprints Lab4]$ kubectl apply -f Lab4_Q4.yaml 
+persistentvolumeclaim/claim-log-1 created
+```
 ***
 
 ## 5- Create a webapp pod to use the persistent volume claim as its storage. 
@@ -104,25 +147,60 @@ Welcome to DevOps Industries
     Volume Mount: /var/log/nginx 
 
 ### <u>__Solution__:</u>
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webapp
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: webapp-pod
+    image: nginx
+    volumeMounts:
+      - mountPath: /var/log/nginx
+        name: vol
+  volumes:
+    - name: vol
+      persistentVolumeClaim:
+        claimName: claim-log-1
+```
 
+```shell
+[mgamal@centos-sprints Lab4]$ kubectl apply -f Lab4_Q5.yaml 
+pod/webapp created
+```
 ***
 
 ## 6- How many DaemonSets are created in the cluster in all namespaces? 
 
 ### <u>__Solution__:</u>
-
+```shell
+[mgamal@centos-sprints Lab4]$ kubectl get DaemonSets --all-namespaces
+NAMESPACE     NAME         DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+kube-system   kube-proxy   1         1         1       1            1           kubernetes.io/os=linux   26d
+```
 ***
 
 ## 7- what DaemonSets exist on the kube-system namespace? 
 
 ### <u>__Solution__:</u>
-
+```shell
+[mgamal@centos-sprints Lab4]$ kubectl get DaemonSets -n kube-system
+NAME         DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+kube-proxy   1         1         1       1            1           kubernetes.io/os=linux   26d
+```
 ***
 
 ## 8- What is the image used by the POD deployed by the kube-proxy DaemonSet 
 
 ### <u>__Solution__:</u>
-
+```shell
+[mgamal@centos-sprints Lab4]$ kubectl get DaemonSets -n kube-system -o wide
+NAME         DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE   CONTAINERS   IMAGES                               SELECTOR
+kube-proxy   1         1         1       1            1           kubernetes.io/os=linux   26d   kube-proxy   registry.k8s.io/kube-proxy:v1.25.3   k8s-app=kube-proxy
+```
 ***
 
 ## 9- Deploy a DaemonSet for FluentD Logging. Use the given 
@@ -132,7 +210,32 @@ Welcome to DevOps Industries
     Image: k8s.gcr.io/fluentd-elasticsearch:1.20 
 
 ### <u>__Solution__:</u>
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: elasticsearch
+  namespace: kube-system
+  labels:
+    k8s-app: fluentd
+spec:
+  selector:
+    matchLabels:
+      name: fluentd
+  template:
+    metadata:
+      labels:
+        name: fluentd
+    spec:
+      containers:
+        - name: fluentd
+          image: k8s.gcr.io/fluentd-elasticsearch:1.20
+```
 
+```shell
+[mgamal@centos-sprints Lab4]$ kubectl apply -f Lab4_Q9.yaml 
+daemonset.apps/elasticsearch created
+```
 ***
 
 ## 10- Create a multi-container pod with 2 containers. 
@@ -143,6 +246,24 @@ Welcome to DevOps Industries
     Container 2 Image: redis 
 
 ### <u>__Solution__:</u>
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: yellow
+spec:
+  containers:
+    - name: lemon
+      image: busybox
+      tty: true
+    - name: gold
+      image: redis
+```
+
+```shell
+[mgamal@centos-sprints Lab4]$ kubectl apply -f Lab4_Q10.yaml 
+pod/yellow created
+```
 ***
 <br>
 
