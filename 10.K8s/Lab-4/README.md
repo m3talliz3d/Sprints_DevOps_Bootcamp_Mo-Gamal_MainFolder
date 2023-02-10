@@ -45,6 +45,37 @@ red    1/1     Running   0          37s
 
 ### <u>__Solution__:</u>
 
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: print-env-greeting
+  labels:
+    app: greeting
+spec:
+      containers:
+      - name: greeting
+        image: bash
+        env:
+          - name: GREETING 
+            value: "Welcome to"
+          - name: COMPANY
+            value: "DevOps"
+          - name: GROUP
+            value: "Industries"
+        command: ['sh', '-c', 'echo "$GREETING $COMPANY $GROUP" ']
+```
+
+```bash
+[mgamal@centos-sprints Lab4]$ kubectl apply -f Lab4_Q2.yaml 
+pod/print-env-greeting created
+[mgamal@centos-sprints Lab4]$ kubectl get pod
+NAME                 READY   STATUS             RESTARTS     AGE
+print-env-greeting   0/1     CrashLoopBackOff   1 (5s ago)   16s
+[mgamal@centos-sprints Lab4]$ kubectl logs -f print-env-greeting
+Welcome to DevOps Industries
+```
+
 ***
 
 ## 3- Create a Persistent Volume with the given specification. 
