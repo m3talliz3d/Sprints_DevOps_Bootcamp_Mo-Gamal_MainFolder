@@ -264,6 +264,31 @@ spec:
 [mgamal@centos-sprints Lab4]$ kubectl apply -f Lab4_Q10.yaml 
 pod/yellow created
 ```
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: yellow
+spec:
+  containers:
+    - name: lemon
+      image: busybox
+      tty: true
+    - name: gold
+      image: redis
+```
+
+```shell
+[mgamal@centos-sprints Lab4]$ kubectl apply -f Lab4_Q10.yaml 
+pod/yellow created
+```
+***
+<br>
+
+```shell
+[mgamal@centos-sprints Lab4]$ kubectl apply -f Lab4_Q10.yaml 
+pod/yellow created
+```
 ***
 ## Pulling MongoDB was working in previous Lab thus skipped
 ***
