@@ -1,0 +1,75 @@
+---
+- name: Play for deploying Nexus
+  hosts: remote
+  remote_user: centos
+  become: true
+  vars:
+    - nexusdir: /opt/nexus
+  tasks:
+    - name: Apt to install java and wget
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/yum_module.html
+      ansible.builtin.yum:
+        name:
+          - java-1.8.0-openjdk.x86_64
+          - wget
+        state: present
+
+    - name: Create nexus directory
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html#stq=wget&stp=1
+      ansible.builtin.file:
+        path: "{{ nexusdir }}"
+        state: directory
+
+    - name: Download Nexus
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/get_url_module.html
+      ansible.builtin.get_url:
+        url: https://download.sonatype.com/nexus/3/nexus-3.47.1-01-unix.tar.gz
+        dest: "{{ nexusdir }}/nexus.tar.gz"
+        checksum: md5:6dd366f8f4034bf95419812d5dae999a
+
+    - name: Extract nexus gz file
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/unarchive_module.html
+      ansible.builtin.unarchive:
+        src: "{{ nexusdir }}/nexus.tar.gz"
+        dest: "{{ nexusdir }}"
+        remote_src: true
+
+    - name: Insert environemnt Variable in bashrc
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/blockinfile_module.html
+      ansible.builtin.blockinfile:
+        path: /root/.bashrc
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+        block: |
+          export NEXUSDIR=`echo /opt/nexus/nexus-3.47.1-01 | cut -d '/' -f4-`
+        insertafter: EOF
+        # state: absent
+
+    - name: Reload bashrc
+      ansible.builtin.shell: source /root/.bashrc
+
+    # Using blockinfile did not work with export, as export
+    # was nnot being applied, will try with command module.
+    # - name: Apply environemnt variable for NEXUSDIR
+    #   ansible.builtin.shell: export NEXUSDIR=`echo /opt/nexus/nexus-3.47.1-01 | cut -d '/' -f4-`
+    # Using shell module to reload bashrc at line 47
+
+    - name: Copy Template for nexu Service
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
+      ansible.builtin.template:
+        src: "nexus-service.j2"
+        dest: "/etc/systemd/system/nexus.service"
+
+    - name: Stop firewall service
+      # Stop firewall service as it is blocking port 8081.
+      ansible.builtin.systemd:
+        name: firewalld
+        state: stopped
+        enabled: false
+      
+    - name: Start & Enable Nexus service
+      # Staring Nexus service
+      ansible.builtin.systemd:
+        name: nexus
+        daemon_reload: true
+        state: started
+        enabled: true
